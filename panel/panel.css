@@ -1,536 +1,630 @@
-/* Reset and base styles */
-* {
+/* Scoped to axiom- prefixed classes — safe to inject into any host page */
+
+#axiom-panel-container,
+#axiom-panel-container *,
+#axiom-advanced-modal,
+#axiom-advanced-modal *,
+#axiom-confirm-modal,
+#axiom-confirm-modal * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
-html, body {
-  width: 100%;
-  height: 100%;
-}
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-  font-size: 14px;
-  color: #202124;
-  background: transparent;
-  padding: 0;
-}
-
-.panel {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-  padding: 16px;
+/* ── Panel card ──────────────────────────────────────── */
+.axiom-panel {
+  background: #ffffff;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  width: 100%;
-  max-width: 380px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 13px;
+  color: #0d0d0d;
 }
 
-/* Section Labels */
-.section-label {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  color: #9aa0a6;
-}
-
-/* Control Row (Pro Mode, Skip Confirmation) */
-.control-row {
+/* ── Header ──────────────────────────────────────────── */
+.axiom-panel-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
-  padding: 12px 0;
-  border-top: 1px solid #e8eaed;
+  padding: 13px 24px 12px;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
 }
 
-.control-row:first-child {
-  border-top: none;
-  padding-top: 0;
-}
-
-.control-left {
+.axiom-wordmark {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  color: #0d0d0d;
 }
 
-.control-labels {
+.axiom-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.axiom-icon-btn {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: background 0.12s, color 0.12s;
+  padding: 0;
+  flex-shrink: 0;
+  color: #b8bec8;
+}
+
+.axiom-icon-btn:hover {
+  background: rgba(0,0,0,0.05);
+  color: #6b7280;
+}
+
+/* ── Panel body ──────────────────────────────────────── */
+.axiom-panel-body {
+  padding: 0 24px 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Section ─────────────────────────────────────────── */
+.axiom-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px 0;
+}
+
+.axiom-section-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.axiom-label-tag {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #9ca3af;
+}
+
+.axiom-big-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fa5b1c;
+  letter-spacing: -0.5px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Rule ────────────────────────────────────────────── */
+.axiom-rule {
+  height: 1px;
+  background: rgba(0,0,0,0.06);
+  flex-shrink: 0;
+}
+
+/* ── Slider ──────────────────────────────────────────── */
+.axiom-slider {
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: #e8e9ec;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+.axiom-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid #fa5b1c;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.14);
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+
+.axiom-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 2px 8px rgba(250,91,28,0.3);
+}
+
+.axiom-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid #fa5b1c;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.14);
+}
+
+.axiom-slider-hints {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: #c4c9d1;
+  margin-top: -4px;
+}
+
+/* ── Toggle row ──────────────────────────────────────── */
+.axiom-toggle-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 0;
+}
+
+.axiom-toggle-info {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
-.control-label {
-  font-size: 14px;
+.axiom-toggle-title {
+  font-size: 13px;
   font-weight: 500;
-  color: #202124;
+  color: #0d0d0d;
+  letter-spacing: -0.1px;
 }
 
-.control-subtitle {
-  font-size: 12px;
-  color: #9aa0a6;
+.axiom-toggle-sub {
+  font-size: 11px;
+  color: #9ca3af;
+  line-height: 1.4;
 }
 
-.icon-logo {
-  width: 24px;
-  height: 24px;
-  color: #1f73e6;
-  flex-shrink: 0;
-}
-
-/* Toggle Switch */
-.toggle-switch {
+/* ── Toggle switch 44×24 ─────────────────────────────── */
+.axiom-toggle-switch {
   position: relative;
   display: inline-block;
-  width: 40px;
+  width: 44px;
   height: 24px;
   flex-shrink: 0;
+  cursor: pointer;
 }
 
-.toggle-switch input {
+.axiom-toggle-switch input {
+  position: absolute;
   opacity: 0;
   width: 0;
   height: 0;
 }
 
-.toggle-slider {
+.axiom-toggle-slider {
   position: absolute;
   cursor: pointer;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #dadce0;
-  transition: 0.3s;
+  background: #d1d5db;
+  transition: background 0.2s;
   border-radius: 24px;
 }
 
-.toggle-slider::before {
-  position: absolute;
+.axiom-toggle-slider::before {
   content: "";
+  position: absolute;
   height: 18px;
   width: 18px;
   left: 3px;
-  bottom: 3px;
-  background-color: white;
-  transition: 0.3s;
-  border-radius: 50%;
-}
-
-input:checked + .toggle-slider {
-  background-color: #1f73e6;
-}
-
-input:checked + .toggle-slider::before {
-  transform: translateX(16px);
-}
-
-/* Speed Control Section */
-.control-section {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 12px 0;
-  border-top: 1px solid #e8eaed;
-}
-
-.control-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.value-display {
-  font-size: 14px;
-  font-weight: 500;
-  color: #1f73e6;
-}
-
-.slider {
-  width: 100%;
-  height: 4px;
-  border-radius: 2px;
-  background: #dadce0;
-  outline: none;
-  -webkit-appearance: none;
-  appearance: none;
-  cursor: pointer;
-}
-
-.slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: #1f73e6;
-  cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
-}
-
-.slider::-moz-range-thumb {
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: #1f73e6;
-  cursor: pointer;
-  border: none;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
-}
-
-.slider-labels {
-  display: flex;
-  justify-content: space-between;
-  font-size: 11px;
-  color: #9aa0a6;
-}
-
-/* Text Section */
-.text-section {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 12px 0;
-  border-top: 1px solid #e8eaed;
-}
-
-/* Toolbar */
-.toolbar {
-  display: flex;
-  gap: 4px;
-  flex-wrap: wrap;
-  padding: 8px;
-  background: #f8f9fa;
-  border: 1px solid #e8eaed;
-  border-radius: 6px;
-}
-
-.toolbar-btn {
-  width: 32px;
-  height: 32px;
-  border: 1px solid #dadce0;
+  top: 3px;
   background: white;
-  border-radius: 4px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-  flex-shrink: 0;
+  border-radius: 50%;
+  transition: transform 0.22s cubic-bezier(0.34, 1.4, 0.64, 1);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.18);
 }
 
-.toolbar-btn svg {
-  width: 16px;
-  height: 16px;
-  color: #5f6368;
+.axiom-toggle-switch input:checked + .axiom-toggle-slider {
+  background: #fa5b1c;
 }
 
-.toolbar-btn:hover {
-  background: #fff;
-  border-color: #1f73e6;
-  color: #1f73e6;
+.axiom-toggle-switch input:checked + .axiom-toggle-slider::before {
+  transform: translateX(20px);
 }
 
-.toolbar-btn:hover svg {
-  color: #1f73e6;
-}
-
-/* Contenteditable Text Input */
-.text-input {
+/* ── Textarea ────────────────────────────────────────── */
+.axiom-textarea {
   width: 100%;
-  min-height: 100px;
-  padding: 10px;
-  border: 1px solid #dadce0;
-  border-radius: 6px;
+  min-height: 200px;
+  padding: 12px 13px;
+  border: 1.5px solid transparent;
+  border-radius: 8px;
   font-family: inherit;
   font-size: 13px;
-  line-height: 1.5;
+  line-height: 1.6;
+  color: #0d0d0d;
+  background: #f7f8fa;
   outline: none;
-  transition: border-color 0.2s;
-  overflow-y: auto;
-  word-wrap: break-word;
-  white-space: pre-wrap;
+  resize: vertical;
+  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
 }
 
-.text-input:focus {
-  border-color: #1f73e6;
-  box-shadow: 0 0 0 2px rgba(31, 115, 230, 0.1);
+.axiom-textarea::placeholder {
+  color: #c4c9d1;
 }
 
-.text-input:empty::before {
-  content: attr(placeholder);
-  color: #bdc1c6;
-  pointer-events: none;
+.axiom-textarea:focus {
+  border-color: #fa5b1c;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(250,91,28,0.08);
 }
 
-/* Button Group */
-.button-group {
-  display: flex;
-  gap: 8px;
-  padding: 12px 0;
-  border-top: 1px solid #e8eaed;
-}
+.axiom-textarea::-webkit-scrollbar        { width: 4px; }
+.axiom-textarea::-webkit-scrollbar-track  { background: transparent; }
+.axiom-textarea::-webkit-scrollbar-thumb  { background: #dde0e5; border-radius: 2px; }
 
-.btn {
-  flex: 1;
-  padding: 10px 16px;
+/* ── Start button ────────────────────────────────────── */
+.axiom-start-btn {
+  width: 100%;
+  height: 42px;
+  padding: 0 18px;
+  background: #fa5b1c;
+  color: white;
   border: none;
-  border-radius: 20px;
+  border-radius: 8px;
+  font-family: inherit;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
+  letter-spacing: -0.1px;
   cursor: pointer;
-  transition: all 0.2s;
-  outline: none;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
+  transition: background 0.12s, box-shadow 0.12s, transform 0.1s;
+  outline: none;
+  margin-top: 12px;
 }
 
-.btn-primary {
-  background: #1f73e6;
-  color: white;
+.axiom-start-btn:hover:not(:disabled) {
+  background: #e0490e;
+  box-shadow: 0 4px 16px rgba(250,91,28,0.32);
 }
 
-.btn-primary:hover:not(:disabled) {
-  background: #1765cc;
-  box-shadow: 0 4px 8px rgba(31, 115, 230, 0.25);
+.axiom-start-btn:active:not(:disabled) {
+  transform: scale(0.99);
+  box-shadow: none;
 }
 
-.btn-primary:active:not(:disabled) {
-  transform: scale(0.98);
-}
-
-.btn-primary:disabled {
-  background: #dadce0;
-  color: #9aa0a6;
+.axiom-start-btn:disabled {
+  background: #f3f4f5;
+  color: #c4c9d1;
   cursor: not-allowed;
 }
 
-.btn-secondary {
-  background: #e8eaed;
-  color: #5f6368;
-}
-
-.btn-secondary:hover:not(:disabled) {
-  background: #dadce0;
-}
-
-.btn-secondary:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.btn-icon {
-  width: 16px;
-  height: 16px;
-}
-
-/* Info Banners */
-.banner {
+/* ── Progress section ────────────────────────────────── */
+.axiom-progress-section {
   display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 10px 12px;
-  background: #fff3cd;
-  border-left: 3px solid #ff9800;
-  border-radius: 4px;
+  flex-direction: column;
+  gap: 7px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(0,0,0,0.06);
+}
+
+.axiom-progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.axiom-progress-status {
   font-size: 12px;
-  color: #5d4e37;
-  margin-top: 4px;
+  color: #374151;
+  font-weight: 500;
 }
 
-.banner-icon {
-  width: 16px;
-  height: 16px;
-  color: #ff9800;
-  flex-shrink: 0;
-  margin-top: 2px;
+.axiom-progress-bar {
+  width: 100%;
+  height: 3px;
+  background: #e8e9ec;
+  border-radius: 2px;
+  overflow: hidden;
 }
 
-/* Scrollbar styling for contenteditable */
-.text-input::-webkit-scrollbar {
-  width: 6px;
+.axiom-progress-fill {
+  height: 100%;
+  background: #fa5b1c;
+  border-radius: 2px;
+  transition: width 0.2s ease;
+  width: 0%;
 }
 
-.text-input::-webkit-scrollbar-track {
+.axiom-progress-info {
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+.axiom-btn-cancel {
+  padding: 4px 10px;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 5px;
   background: transparent;
+  font-size: 11px;
+  font-weight: 500;
+  color: #6b7280;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+  font-family: inherit;
 }
 
-.text-input::-webkit-scrollbar-thumb {
-  background: #dadce0;
-  border-radius: 3px;
+.axiom-btn-cancel:hover {
+  background: #f7f8fa;
+  border-color: rgba(0,0,0,0.15);
 }
 
-.text-input::-webkit-scrollbar-thumb:hover {
-  background: #bdc1c6;
-}
-
-}
-
-.progress-info {
-  font-size: 12px;
-  color: #5f6368;
-}
-
-/* Modal */
-.modal {
+/* ── Modals ──────────────────────────────────────────── */
+.axiom-modal {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0,0,0,0.38);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000000;
+  z-index: 2147483647;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 13px;
+  color: #0d0d0d;
 }
 
-.modal-content {
+.axiom-modal-content {
   background: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  max-width: 90%;
-  max-height: 90vh;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
+  width: 90%;
+  max-width: 400px;
+  max-height: 85vh;
   overflow-y: auto;
-  animation: slideIn 0.2s ease-out;
+  animation: axiomSlideIn 0.18s ease-out;
 }
 
-@keyframes slideIn {
-  from {
-    transform: scale(0.95);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
+@keyframes axiomSlideIn {
+  from { transform: scale(0.96); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
 }
 
-.modal-header {
+.axiom-modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px;
-  border-bottom: 1px solid #e8eaed;
+  padding: 15px 18px;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
 }
 
-.modal-header h2 {
-  font-size: 18px;
-  font-weight: 500;
+.axiom-modal-header h2 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+  color: #0d0d0d;
+  letter-spacing: -0.2px;
 }
 
-.modal-close {
-  width: 32px;
-  height: 32px;
+.axiom-modal-close {
+  width: 26px;
+  height: 26px;
   border: none;
   background: transparent;
   cursor: pointer;
-  font-size: 20px;
-  color: #5f6368;
+  font-size: 13px;
+  color: #9ca3af;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 4px;
+  border-radius: 5px;
+  transition: background 0.12s, color 0.12s;
 }
 
-.modal-close:hover {
-  background: #f0f0f0;
+.axiom-modal-close:hover {
+  background: rgba(0,0,0,0.05);
+  color: #6b7280;
 }
 
-.modal-body {
-  padding: 16px;
+.axiom-modal-body {
+  padding: 18px;
 }
 
-.modal-footer {
+.axiom-modal-footer {
   display: flex;
   gap: 8px;
   justify-content: flex-end;
-  padding: 16px;
-  border-top: 1px solid #e8eaed;
+  padding: 12px 18px;
+  border-top: 1px solid rgba(0,0,0,0.06);
 }
 
-/* Settings Form */
-.setting-group {
+/* ── Settings form ───────────────────────────────────── */
+.axiom-setting-group {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
-.setting-group label {
+.axiom-setting-group label {
   font-weight: 500;
-  font-size: 13px;
+  font-size: 12px;
+  color: #374151;
 }
 
-.form-control {
-  padding: 8px 10px;
-  border: 1px solid #dadce0;
-  border-radius: 4px;
+.axiom-helper-text {
+  font-size: 11px;
+  color: #9ca3af;
+  line-height: 1.4;
+}
+
+.axiom-form-control {
+  width: 100%;
+  padding: 7px 10px;
+  border: 1.5px solid rgba(0,0,0,0.1);
+  border-radius: 7px;
   font-size: 13px;
   font-family: inherit;
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  color: #0d0d0d;
+  background: #ffffff;
 }
 
-.form-control:focus {
-  border-color: #1f73e6;
-  box-shadow: 0 0 0 2px rgba(31, 115, 230, 0.1);
+.axiom-form-control:focus {
+  border-color: #fa5b1c;
+  box-shadow: 0 0 0 3px rgba(250,91,28,0.08);
 }
 
-.form-control-small {
-  flex: 1;
+.axiom-value-display {
+  font-size: 12px;
+  font-weight: 600;
+  color: #fa5b1c;
+  min-width: 40px;
+  text-align: right;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
 }
 
-.slider-with-value {
+.axiom-slider-with-value {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.slider-with-value .slider {
+.axiom-slider-with-value .axiom-slider {
   flex: 1;
 }
 
-.value-display {
-  min-width: 45px;
-  text-align: right;
-  font-weight: 500;
-  color: #1f73e6;
-}
-
-.duration-inputs {
+.axiom-duration-inputs {
   display: flex;
-  gap: 12px;
+  gap: 10px;
 }
 
-.duration-input-group {
+.axiom-duration-input-group {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.duration-input-group label {
-  font-size: 12px;
+.axiom-duration-input-group label {
+  font-size: 11px;
   font-weight: 500;
+  color: #6b7280;
 }
 
-/* Confirm Modal */
-.confirm-modal-content {
-  max-width: 320px;
+/* ── Modal buttons ───────────────────────────────────── */
+.axiom-btn {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.12s, box-shadow 0.12s;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-family: inherit;
 }
 
-.confirm-text {
-  padding: 24px 16px;
+.axiom-btn-primary {
+  background: #fa5b1c;
+  color: white;
+}
+
+.axiom-btn-primary:hover:not(:disabled) {
+  background: #e0490e;
+  box-shadow: 0 3px 10px rgba(250,91,28,0.28);
+}
+
+.axiom-btn-cancel-outline {
+  padding: 8px 14px;
+  border: 1.5px solid rgba(0,0,0,0.1);
+  border-radius: 7px;
+  background: white;
+  font-size: 13px;
+  font-weight: 500;
+  color: #6b7280;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+  font-family: inherit;
+}
+
+.axiom-btn-cancel-outline:hover {
+  background: #f7f8fa;
+  border-color: rgba(0,0,0,0.15);
+}
+
+/* ── Confirm modal ───────────────────────────────────── */
+.axiom-confirm-modal-content {
+  max-width: 300px;
+}
+
+.axiom-confirm-text {
+  padding: 24px 20px;
   text-align: center;
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: 13px;
+  line-height: 1.65;
+  color: #374151;
+}
+
+/* ── Inline config section ───────────────────────────── */
+.axiom-config-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  gap: 16px;
+}
+
+.axiom-config-toggle-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.axiom-config-chevron {
+  transition: transform 0.18s ease;
+  color: #b8bec8;
+  flex-shrink: 0;
+}
+
+.axiom-config-toggle.axiom-expanded .axiom-config-chevron {
+  transform: rotate(180deg);
+}
+
+.axiom-config-toggle:hover .axiom-config-chevron {
+  color: #6b7280;
+}
+
+#axiom-config-panel {
+  padding-bottom: 8px;
+}
+
+#axiom-config-panel .axiom-setting-group:last-of-type {
+  margin-bottom: 4px;
 }

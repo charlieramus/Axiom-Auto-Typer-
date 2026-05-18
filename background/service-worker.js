@@ -10,10 +10,12 @@ let isTyping = false;
 let currentCancelFlag = false;
 
 /**
- * Handle action button click: open the side panel
+ * Handle action button click: toggle the overlay panel on the active tab
  */
 chrome.action.onClicked.addListener((tab) => {
-  chrome.sidePanel.open({ tabId: tab.id });
+  chrome.tabs.sendMessage(tab.id, { action: 'TOGGLE_PANEL' }, () => {
+    chrome.runtime.lastError; // suppress error if content script not ready
+  });
 });
 
 /**

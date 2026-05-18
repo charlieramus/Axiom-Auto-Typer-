@@ -128,7 +128,7 @@ class PanelController {
   }
 
   updateButtonStates() {
-    const hasText = this.textInput.value.trim().length > 0;
+    const hasText = this.textInput.textContent.trim().length > 0;
     this.startTypingBtn.disabled = !hasText;
     this.humanizeBtn.disabled = true; // Always disabled in v1
   }
@@ -188,7 +188,7 @@ class PanelController {
   }
 
   async startTyping() {
-    const text = this.textInput.value;
+    const text = this.textInput.textContent;
     if (!text.trim()) {
       return;
     }

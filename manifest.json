@@ -3,7 +3,7 @@
   "name": "Axiom AutoTyper",
   "version": "0.1.0",
   "description": "Type text into Google Docs with humanized typing behavior",
-  "permissions": ["debugger", "storage", "activeTab", "scripting"],
+  "permissions": ["debugger", "storage", "activeTab", "scripting", "tabs"],
   "host_permissions": ["https://docs.google.com/*"],
   "background": {
     "service_worker": "background/service-worker.js",
@@ -18,7 +18,7 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["panel/panel.html", "panel/panel.css"],
+      "resources": ["panel/panel.html", "panel/panel.css", "panel/panel.js", "shared/messages.js", "shared/storage.js", "background/presets.js"],
       "matches": ["https://docs.google.com/*"]
     }
   ],
@@ -29,4 +29,3 @@
     "128": "icons/128.png"
   }
 }
-
