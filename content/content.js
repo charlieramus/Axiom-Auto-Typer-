@@ -207,18 +207,7 @@
     <div id="axiom-advanced-modal" class="axiom-modal" style="display:none;"></div>
   `;
 
-  const CONFIRM_MODAL_HTML = `
-    <div id="axiom-confirm-modal" class="axiom-modal" style="display:none;">
-      <div class="axiom-modal-content axiom-confirm-modal-content">
-        <div class="axiom-confirm-text">
-          Click into your Google Doc, then return here within <span id="axiom-countdown">5</span> seconds. Typing will start automatically.
-        </div>
-        <div class="axiom-modal-footer">
-          <button id="axiom-confirm-cancel-btn" class="axiom-btn axiom-btn-cancel-outline">Cancel</button>
-        </div>
-      </div>
-    </div>
-  `;
+  const CONFIRM_MODAL_HTML = ``;
 
   // ── Slider fill helper ────────────────────────────────────────────────────
   function updateSliderFill(slider) {
@@ -240,14 +229,11 @@
       this.advancedBtn            = document.getElementById('axiom-advanced-btn');
       this.closeBtn               = document.getElementById('axiom-close-btn');
       this.advancedModal          = document.getElementById('axiom-advanced-modal');
-      this.confirmModal           = document.getElementById('axiom-confirm-modal');
       this.progressSection        = document.getElementById('axiom-progress-section');
 
       this.currentSettings        = getDefaultSettings();
       this.isTyping               = false;
       this.speedMultiplier        = 1;
-      this.currentCountdownInterval = null;
-      this.confirmationTimeout    = null;
 
       this.init();
     }
@@ -283,9 +269,8 @@
       const modalCancelBtn = document.getElementById('axiom-modal-cancel-btn');
       if (modalCloseBtn)  modalCloseBtn.addEventListener('click',  () => this.closeAdvancedModal());
       if (modalCancelBtn) modalCancelBtn.addEventListener('click', () => this.closeAdvancedModal());
-      document.getElementById('axiom-modal-save-btn').addEventListener('click',     () => this.saveAdvancedSettings());
-      document.getElementById('axiom-confirm-cancel-btn').addEventListener('click', () => this.cancelStartTyping());
-      document.getElementById('axiom-cancel-btn').addEventListener('click',         () => this.cancelTyping());
+      document.getElementById('axiom-modal-save-btn').addEventListener('click', () => this.saveAdvancedSettings());
+      document.getElementById('axiom-cancel-btn').addEventListener('click',    () => this.cancelTyping());
 
       const configToggleBtn = document.getElementById('axiom-config-toggle-btn');
       const configPanel     = document.getElementById('axiom-config-panel');
@@ -436,43 +421,7 @@
       };
 
       this.isTyping = true;
-
-      if (!this.currentSettings.skipStartConfirmation) {
-        this.showConfirmationModal(text, config);
-      } else {
-        this.sendStartTypingMessage(text, config);
-      }
-    }
-
-    showConfirmationModal(text, config) {
-      this.confirmModal.style.display = 'flex';
-      let countdown = 5;
-      document.getElementById('axiom-countdown').textContent = countdown;
-
-      this.currentCountdownInterval = setInterval(() => {
-        countdown--;
-        document.getElementById('axiom-countdown').textContent = countdown;
-        if (countdown <= 0) {
-          clearInterval(this.currentCountdownInterval);
-          this.confirmModal.style.display = 'none';
-          this.sendStartTypingMessage(text, config);
-        }
-      }, 1000);
-
-      this.confirmationTimeout = setTimeout(() => {
-        if (this.confirmModal.style.display === 'flex') {
-          clearInterval(this.currentCountdownInterval);
-          this.confirmModal.style.display = 'none';
-          this.sendStartTypingMessage(text, config);
-        }
-      }, 5000);
-    }
-
-    cancelStartTyping() {
-      clearInterval(this.currentCountdownInterval);
-      clearTimeout(this.confirmationTimeout);
-      this.confirmModal.style.display = 'none';
-      this.isTyping = false;
+      this.sendStartTypingMessage(text, config);
     }
 
     async sendStartTypingMessage(text, config) {

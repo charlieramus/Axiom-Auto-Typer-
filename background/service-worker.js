@@ -207,12 +207,12 @@ async function executeTyping(tabId, text, config, panelTabId) {
       () => chrome.runtime.lastError
     );
   } finally {
-    // Always detach debugger
     if (currentAttachedTabId) {
       await DebuggerHelper.detach(currentAttachedTabId);
       currentAttachedTabId = null;
     }
     isTyping = false;
+    currentCancelFlag = false;
   }
 }
 
@@ -232,15 +232,17 @@ function delay(ms) {
 // Handle messages from panel
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === MESSAGES.START_TYPING) {
-    // Start typing in background
+    if (isTyping) {
+      sendResponse({ success: false, error: 'Already typing' });
+      return true;
+    }
     executeTyping(message.tabId, message.text, message.config, sender.id);
     sendResponse({ success: true });
   } else if (message.action === MESSAGES.CANCEL_TYPING) {
-    // Cancel current typing
     currentCancelFlag = true;
     sendResponse({ success: true });
   }
-  return true; // Indicate we'll send response asynchronously
+  return true;
 });
 
 // Cleanup on debugger detach (if user cancels via UI)
