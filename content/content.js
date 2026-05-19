@@ -347,8 +347,8 @@
     }
 
     updateButtonStates() {
-      const hasText = this.textInput.value.trim().length > 0;
-      this.startTypingBtn.disabled = !hasText;
+      // PHASE 1 TEST: Always enable button (using hardcoded text)
+      this.startTypingBtn.disabled = false;
     }
 
     loadPreset(name) {
@@ -408,34 +408,28 @@
     }
 
     async startTyping() {
-      const text = this.textInput.value;
-      if (!text.trim()) return;
-
+      // PHASE 1 TEST: Hardcoded test with "hello world" at 60 WPM
+      // Ignore all settings for now
+      const text = 'hello world';
       const config = {
-        wpm:             this.currentSettings.wpm * this.speedMultiplier,
-        accuracy:        this.currentSettings.accuracy / 100,
-        correctionSpeed: this.currentSettings.correctionSpeed,
-        breakFrequency:  this.currentSettings.breakFrequency / 100,
-        breakMin:        this.currentSettings.breakMin,
-        breakMax:        this.currentSettings.breakMax,
+        wpm: 60,
+        accuracy: 1.0,  // No typos for now
+        correctionSpeed: 1.0,
+        breakFrequency: 0,  // No breaks
+        breakMin: 0,
+        breakMax: 0,
       };
 
+      console.log('PHASE 1 TEST: Starting typing with hardcoded values', { text, wpm: config.wpm });
       this.isTyping = true;
       this.sendStartTypingMessage(text, config);
     }
 
     async sendStartTypingMessage(text, config) {
-      const tab = await new Promise((resolve) => {
-        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => resolve(tabs[0] || null));
-      });
-
-      if (!tab) {
-        this.isTyping = false;
-        return;
-      }
-
+      // Content script sends message to service worker
+      // Service worker will use sender.tab.id automatically
       this.showProgress();
-      chrome.runtime.sendMessage({ action: MESSAGES.START_TYPING, text, config, tabId: tab.id });
+      chrome.runtime.sendMessage({ action: MESSAGES.START_TYPING, text, config });
     }
 
     showProgress() {
@@ -520,9 +514,10 @@
     container.id = 'axiom-panel-container';
     container.style.cssText = [
       'position:fixed',
-      'bottom:80px',
-      'right:24px',
-      'width:420px',
+      'bottom:max(80px, 24px + 44px + 20px)',
+      'right:max(16px, env(safe-area-inset-right, 0px))',
+      'width:min(90vw, 420px)',
+      'max-height:min(85vh, 80vh)',
       'z-index:2147483646',
       'display:none',
       'border-radius:12px',
@@ -550,8 +545,8 @@
     btn.title = 'Axiom AutoTyper';
     btn.style.cssText = [
       'position:fixed',
-      'bottom:24px',
-      'right:24px',
+      'bottom:max(16px, env(safe-area-inset-bottom, 0px))',
+      'right:max(16px, env(safe-area-inset-right, 0px))',
       'width:44px',
       'height:44px',
       'border-radius:50%',

@@ -71,6 +71,8 @@
   padding: 0 32px 32px;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+  max-height: calc(100vh - 160px);
 }
 
 /* ── Section ─────────────────────────────────────────── */
@@ -626,4 +628,33 @@
 
 #axiom-config-panel .axiom-setting-group:last-of-type {
   margin-bottom: 4px;
+}
+
+/* ── Responsive & Accessibility ──────────────────────── */
+@media (max-height: 600px) {
+  .axiom-panel-header {
+    padding: 14px 24px 12px;
+  }
+
+  .axiom-panel-body {
+    padding: 0 24px 20px;
+  }
+
+  .axiom-section {
+    padding: 16px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .axiom-panel-body {
+    padding: 0 24px 24px;
+  }
+
+  .axiom-section {
+    padding: 16px 0;
+  }
+
+  .axiom-textarea {
+    min-height: 150px;
+  }
 }

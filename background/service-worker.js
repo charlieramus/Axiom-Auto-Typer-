@@ -46,9 +46,10 @@ class DebuggerHelper {
 
   static async dispatchKeyEvent(tabId, params) {
     try {
+      console.log(`[DEBUGGER] Dispatching key event:`, params);
       await chrome.debugger.sendCommand({ tabId }, 'Input.dispatchKeyEvent', params);
     } catch (error) {
-      console.error(`Failed to dispatch key event: ${error.message}`);
+      console.error(`Failed to dispatch key event: ${error.message}`, params);
       throw error;
     }
   }
@@ -119,14 +120,17 @@ function getWindowsVirtualKeyCode(action) {
  */
 async function executeTyping(tabId, text, config, panelTabId) {
   try {
+    console.log('[EXECUTE TYPING] Starting for tab', tabId, 'text length:', text.length);
     isTyping = true;
     currentCancelFlag = false;
 
     // Attach debugger
+    console.log('[EXECUTE TYPING] Attaching debugger to tab', tabId);
     const attached = await DebuggerHelper.attach(tabId);
     if (!attached) {
       throw new Error('Failed to attach debugger');
     }
+    console.log('[EXECUTE TYPING] Debugger attached successfully');
     currentAttachedTabId = tabId;
 
     // Focus the tab
@@ -145,6 +149,7 @@ async function executeTyping(tabId, text, config, panelTabId) {
     const actions = engine.generate();
     const totalChars = text.length;
     let typedChars = 0;
+    console.log('[EXECUTE TYPING] Generated', actions.length, 'actions for', text.length, 'characters');
 
     // Execute each action with proper timing
     for (const action of actions) {
@@ -195,19 +200,19 @@ async function executeTyping(tabId, text, config, panelTabId) {
     }
 
     // Typing complete
-    chrome.runtime.sendMessage(
+    console.log('[EXECUTE TYPING] Typing completed successfully');\n    chrome.runtime.sendMessage(
       { action: MESSAGES.TYPING_COMPLETE },
       () => chrome.runtime.lastError
     );
 
   } catch (error) {
-    console.error('Typing error:', error);
+    console.error('[EXECUTE TYPING] ERROR:', error);
     chrome.runtime.sendMessage(
       { action: MESSAGES.TYPING_ERROR, error: error.message },
       () => chrome.runtime.lastError
     );
   } finally {
-    if (currentAttachedTabId) {
+    console.log('[EXECUTE TYPING] Cleanup: detaching debugger and resetting state');\n    if (currentAttachedTabId) {
       await DebuggerHelper.detach(currentAttachedTabId);
       currentAttachedTabId = null;
     }
@@ -231,14 +236,25 @@ function delay(ms) {
 
 // Handle messages from panel
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  console.log('[SERVICE WORKER] Message received:', message.action, 'from tab:', sender.tab.id);
   if (message.action === MESSAGES.START_TYPING) {
     if (isTyping) {
+      console.error('[SERVICE WORKER] Already typing, rejecting request');
       sendResponse({ success: false, error: 'Already typing' });
       return true;
     }
-    executeTyping(message.tabId, message.text, message.config, sender.id);
+    // Use sender.tab.id since content script can't access chrome.tabs API
+    const tabId = sender.tab.id;
+    if (!tabId) {
+      console.error('[SERVICE WORKER] Could not determine tab ID');
+      sendResponse({ success: false, error: 'Could not determine tab ID' });
+      return true;
+    }
+    console.log('[SERVICE WORKER] Starting typing on tab', tabId, 'with text:', message.text);
+    executeTyping(tabId, message.text, message.config, sender.id);
     sendResponse({ success: true });
   } else if (message.action === MESSAGES.CANCEL_TYPING) {
+    console.log('[SERVICE WORKER] Cancel typing received');
     currentCancelFlag = true;
     sendResponse({ success: true });
   }
